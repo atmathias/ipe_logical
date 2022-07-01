@@ -204,6 +204,37 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_wa
 view(df_walking_dist_drinking_water_source)
 
 
+# If respondent answered to "How many trips did you make using the containers?" i.e. number_of_trips_for_each_container > '0' 
+# and total amount of water collected i.e. calc_total_volume = '0', survey should be checked
+
+df_calc_total_volume <- df_ipe_logical_data %>% 
+  filter(calc_total_volume == 0 , number_of_trips_for_each_container > 0) %>%
+  mutate(m.type = NA,
+         m.name = "calc_total_volume",
+         m.current_value = calc_total_volume,
+         m.value = "",
+         m.issue_id = "un_expected_response",
+         m.issue = glue("number_of_trips_for_each_container: {number_of_trips_for_each_container}, but calc_total_volume: {calc_total_volume}"),
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "Enmerators should pay attention", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_calc_total_volume")
+
+
+
+
+
+
+
+
 
 
 
