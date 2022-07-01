@@ -55,6 +55,45 @@ df_relation_to_hoh <- df_ipe_logical_data %>%
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_relation_to_hoh")
 
 
+# If response to "live_in_house" is no, survey needs to be checked
+
+df_live_in_house <- df_ipe_logical_data %>% 
+  filter(live_in_house == "no") %>%
+  mutate(m.type = NA,
+         m.name = "live_in_house",
+         m.current_value = live_in_house,
+         m.value = "",
+         m.issue_id = "un_expected_response",
+         m.issue = "If respondent does not live in the house, then should not answer for household",
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_live_in_house")
+
+
+# If hh_size = 1 and respondent does not live in the house i.e. live_in_house = no, survey needs to be checked
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
