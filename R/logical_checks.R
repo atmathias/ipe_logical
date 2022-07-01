@@ -218,7 +218,7 @@ df_calc_total_volume <- df_ipe_logical_data %>%
          m.other_text = "",
          m.checked_by = "",
          m.checked_date = as_date(today()),
-         m.comment = "Enmerators should pay attention", 
+         m.comment = "Enumerator should pay attention", 
          m.reviewed = "",
          m.adjust_log = "",
          m.uuid_cl = "",
@@ -228,6 +228,33 @@ df_calc_total_volume <- df_ipe_logical_data %>%
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_calc_total_volume")
 
+
+# If most_important_sources_of_earnings = 'none' and process_and_sell_any_agricultural_by_products or own_a_trading_business or 
+# own_a_professional_office or  drive_a_household_owned_taxi_bodaboda or own_a_bar_or_restaurant or 
+# own_any_other_non_agricultural_business = 'yes', survey should be checked
+
+df_most_important_sources_of_earnings <- df_ipe_logical_data %>% 
+  filter(process_and_sell_any_agricultural_by_products %in% c("yes") | own_a_trading_business %in% c("yes") | 
+         own_a_professional_office %in% c("yes") | drive_a_household_owned_taxi_bodaboda %in% c("yes") |  own_a_bar_or_restaurant %in% c("yes")|
+         own_any_other_non_agricultural_business %in% c("yes"), most_important_sources_of_earnings == "none") %>%
+  mutate(m.type = "change_response",
+         m.name = "most_important_sources_of_earnings",
+         m.current_value = most_important_sources_of_earnings,
+         m.value = "yes",
+         m.issue_id = "logic_issue_most_important_sources_of_earnings",
+         m.issue = "Household member has an economic activity yet source of earning is none",
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "Enumerator should pay attention", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_most_important_sources_of_earnings")
 
 
 
