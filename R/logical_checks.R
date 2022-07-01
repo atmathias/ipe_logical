@@ -103,6 +103,29 @@ df_live_in_house_and_hh_size <- df_ipe_logical_data %>%
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_live_in_house_and_hh_size")
 
 
+# If respondent answered to "How long have you lived in the house?" i.e  long_live_in_house = ‘more_than_two_years’ or ‘one_to_two_years’ and 
+# food_aid_assistance = ‘no’, survey should be checked
+
+df_food_aid_assistance <- df_ipe_logical_data %>% 
+  filter(long_live_in_house %in% c("more_than_two_years", "one_to_two_years"), food_aid_assistance == "no") %>%
+  mutate(m.type = "change_response",
+         m.name = "food_aid_assistance",
+         m.current_value = food_aid_assistance,
+         m.value = "",
+         m.issue_id = "logic_issue_food_aid_assistance",
+         m.issue = glue("long_live_in_house: {long_live_in_house}, but food_aid_assistance: {food_aid_assistance}"),
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "Needs confirmation from the field", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_food_aid_assistance")
 
 
 
