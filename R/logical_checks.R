@@ -282,6 +282,27 @@ df_no_fd_frequency <- df_ipe_logical_data %>%
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_no_fd_frequency")
 
 
+# If pulses_fcs = 0 i.e. household has not eaten beans in the past seven days, surveys should be checked
+df_pulses_fcs <- df_ipe_logical_data %>% 
+  filter(pulses_fcs == 0) %>%
+  mutate(m.type = NA,
+         m.name = "pulses_fcs",
+         m.current_value = pulses_fcs,
+         m.value = "",
+         m.issue_id = "un_expected_response",
+         m.issue = "It's unlikely that a household member will spend 7 days eating food without any beans",
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_pulses_fcs")
 
 
 
