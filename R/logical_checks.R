@@ -257,6 +257,32 @@ df_most_important_sources_of_earnings <- df_ipe_logical_data %>%
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_most_important_sources_of_earnings")
 
 
+# If Respondent stays alone i.e. hh_size = 1, spends (exp_food) 50,000 shillings or more on food 
+# but for more than 5 days (no_fd_frequency) in a month has no food
+
+df_no_fd_frequency <- df_ipe_logical_data %>% 
+  filter(exp_food > 50000, no_fd_frequency %in% c("often"), hh_size == 1) %>%
+  mutate(m.type = NA,
+         m.name = "no_fd_frequency",
+         m.current_value = no_fd_frequency,
+         m.value = "",
+         m.issue_id = "logic_issue_most_important_sources_of_earnings",
+         m.issue = glue("hh_size: {hh_size}, exp_food: {exp_food}, but no_fd_frequency: {no_fd_frequency} has no food to eat at all" ),
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "Enumerator should pay attention", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_no_fd_frequency")
+
+
+
 
 
 
