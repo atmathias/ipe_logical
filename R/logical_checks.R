@@ -81,6 +81,26 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_li
 
 # If hh_size = 1 and respondent does not live in the house i.e. live_in_house = no, survey needs to be checked
 
+df_live_in_house_and_hh_size <- df_ipe_logical_data %>% 
+  filter(live_in_house %in% c("no") , hh_size == 1) %>%
+  mutate(m.type = "change_response",
+         m.name = "live_in_house",
+         m.current_value = live_in_house,
+         m.value = "",
+         m.issue_id = "un_expected_response",
+         m.issue = "hh_size = 1 but respondent does not live in the house i.e. live_in_house = no",
+         m.other_text = "",
+         m.checked_by = "",
+         m.checked_date = as_date(today()),
+         m.comment = "", 
+         m.reviewed = "",
+         m.adjust_log = "",
+         m.uuid_cl = "",
+         m.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("m.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_live_in_house_and_hh_size")
 
 
 
