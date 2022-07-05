@@ -302,7 +302,11 @@ df_pulses_fcs <- df_ipe_logical_data %>%
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_pulses_fcs")
 
-ipe_combined_checks <- bind_rows(logic_output)
+ipe_combined_checks <- bind_rows(logic_output) %>% 
+  mutate(int.name = ifelse(str_detect(string = name, pattern = "_rank_.*"), str_replace(string = name, pattern = "_rank_.*", replacement = ""), name)) %>% 
+  left_join(df_ipe_survey %>% select(name, label), by = c("int.name" = "name")) %>% 
+  select(-int.name) %>% 
+  relocate(label, .after = name)
 
 write_csv(x = ipe_combined_checks, file = paste0("outputs/", butteR::date_file_prefix(), "_logical_checks.csv"), na = "")
 
