@@ -8,11 +8,11 @@ source("R/list_function.R")
 
 # Load data
 
-df_ipe_logical_data <- readxl::read_excel("inputs/Individual_Profiling_Exercise_-_Questionnaire_for_Sampled_Households_shared_2022-06-15.xlsx") %>% 
-  mutate(m.uuid = '_uuid',
-         m.start_date = as_date(start),
-         m.enumerator_id = Enumerator,
-         m.settlement_name = settlement,
+df_ipe_logical_data <- readxl::read_excel("inputs/Individual_Profiling_Exercise_-_Questionnaire_for_Sampled_Households_shared_2022-06-27.xlsx") %>%
+    mutate(i.check.uuid = `_uuid`,
+         i.check.start_date = as_date(start),
+         i.check.enumerator_id = enumerator_id,
+         i.check.settlement_name = settlement,
          start = as_datetime(start),
          end = as_datetime(end)
          
@@ -35,22 +35,22 @@ df_relation_to_hoh <- df_ipe_logical_data %>%
   "grandmother", "uncle", "aunt", "grandson", "mother_in_law", "father_in_law", "son_in_law", "bother_in_law", "sister_in_law", 
   "niece", "nephew", "granddaughter", "cousin_female", "cousin_male", "half_brother", "half_sister", "foster_child",
   "no_blood_relation", "other_blood_relation") , hh_size == 1) %>%
-  mutate(m.type = "change_response",
-         m.name = "relation_to_hoh",
-         m.current_value = relation_to_hoh,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = "hh_size = 1 but relation_to_hoh is not: head_of_household",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "relation_to_hoh",
+         i.check.current_value = relation_to_hoh,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = "hh_size = 1 but relation_to_hoh is not: head_of_household",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_relation_to_hoh")
 
@@ -59,22 +59,22 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_re
 
 df_live_in_house <- df_ipe_logical_data %>% 
   filter(live_in_house == "no") %>%
-  mutate(m.type = NA,
-         m.name = "live_in_house",
-         m.current_value = live_in_house,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = "If respondent does not live in the house, then should not answer for household",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = NA,
+         i.check.name = "live_in_house",
+         i.check.current_value = live_in_house,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = "If respondent does not live in the house, then he/she should not answer for the household",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_live_in_house")
 
@@ -83,22 +83,22 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_li
 
 df_live_in_house_and_hh_size <- df_ipe_logical_data %>% 
   filter(live_in_house %in% c("no") , hh_size == 1) %>%
-  mutate(m.type = "change_response",
-         m.name = "live_in_house",
-         m.current_value = live_in_house,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = "hh_size = 1 but respondent does not live in the house i.e. live_in_house = no",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "live_in_house",
+         i.check.current_value = live_in_house,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = "hh_size = 1 but respondent does not live in the house i.e. live_in_house = no",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_live_in_house_and_hh_size")
 
@@ -108,22 +108,22 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_li
 
 df_food_aid_assistance <- df_ipe_logical_data %>% 
   filter(long_live_in_house %in% c("more_than_two_years", "one_to_two_years"), food_aid_assistance == "no") %>%
-  mutate(m.type = "change_response",
-         m.name = "food_aid_assistance",
-         m.current_value = food_aid_assistance,
-         m.value = "",
-         m.issue_id = "logic_issue_food_aid_assistance",
-         m.issue = glue("long_live_in_house: {long_live_in_house}, but food_aid_assistance: {food_aid_assistance}"),
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Needs confirmation from the field", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "food_aid_assistance",
+         i.check.current_value = food_aid_assistance,
+         i.check.value = "",
+         i.check.issue_id = "logic_issue_food_aid_assistance",
+         i.check.issue = glue("long_live_in_house: {long_live_in_house}, but food_aid_assistance: {food_aid_assistance}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "Needs confirmation from the field", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_food_aid_assistance")
 
@@ -133,22 +133,22 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_fo
 
 df_receive_nfi <- df_ipe_logical_data %>% 
   filter(long_live_in_house %in% c("more_than_two_years", "one_to_two_years"), receive_nfi == "no_i_have_never_received_nfis") %>%
-  mutate(m.type = "change_response",
-         m.name = "receive_nfi",
-         m.current_value = receive_nfi,
-         m.value = "",
-         m.issue_id = "logic_issue_receive_nfi",
-         m.issue = glue("long_live_in_house: {long_live_in_house}, but receive_nfi: {receive_nfi}"),
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Needs confirmation from the field", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "receive_nfi",
+         i.check.current_value = receive_nfi,
+         i.check.value = "",
+         i.check.issue_id = "logic_issue_receive_nfi",
+         i.check.issue = glue("long_live_in_house: {long_live_in_house}, but receive_nfi: {receive_nfi}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "Needs confirmation from the field", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_receive_nfi")
 
@@ -156,22 +156,22 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_re
 # If condiments = 0 i.e. household has not eaten salt, spices, tea, or coffee in the past seven days, surveys should be checked
 df_condiments_fcs <- df_ipe_logical_data %>% 
   filter(condiments_fcs == 0) %>%
-  mutate(m.type = NA,
-         m.name = "condiments_fcs",
-         m.current_value = condiments_fcs,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = "It's unlikely that a household will spend 7 days eating food without salt",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = NA,
+         i.check.name = "condiments_fcs",
+         i.check.current_value = condiments_fcs,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = "It's unlikely that a household will spend 7 days eating food without salt",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_condiments_fcs")
 
@@ -182,26 +182,24 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_co
 df_walking_dist_drinking_water_source <- df_ipe_logical_data %>% 
   filter(walking_dist_drinking_water_source %in% c("btn_201_and_500m", "btn_501m_and_1km", "greater_than_1km"), 
          main_water_source == "water_piped_into_the_dwellingplot") %>%
-  mutate(m.type = "change_response",
-         m.name = "walking_dist_drinking_water_source",
-         m.current_value = walking_dist_drinking_water_source,
-         m.value = "",
-         m.issue_id = "logic_issue_walking_dist_drinking_water_source",
-         m.issue = glue("main_water_source: {main_water_source}, but walking_dist_drinking_water_source: {walking_dist_drinking_water_source}"),
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Needs confirmation from the field", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "walking_dist_drinking_water_source",
+         i.check.current_value = walking_dist_drinking_water_source,
+         i.check.value = "",
+         i.check.issue_id = "logic_issue_walking_dist_drinking_water_source",
+         i.check.issue = glue("main_water_source: {main_water_source}, but walking_dist_drinking_water_source: {walking_dist_drinking_water_source}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "Needs confirmation from the field", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_walking_dist_drinking_water_source")
-
-view(df_walking_dist_drinking_water_source)
 
 
 # If respondent answered to "How many trips did you make using the containers?" i.e. number_of_trips_for_each_container > '0' 
@@ -209,22 +207,22 @@ view(df_walking_dist_drinking_water_source)
 
 df_calc_total_volume <- df_ipe_logical_data %>% 
   filter(calc_total_volume == 0 , number_of_trips_for_each_container > 0) %>%
-  mutate(m.type = NA,
-         m.name = "calc_total_volume",
-         m.current_value = calc_total_volume,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = glue("number_of_trips_for_each_container: {number_of_trips_for_each_container}, but calc_total_volume: {calc_total_volume}"),
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Enumerator should pay attention", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = NA,
+         i.check.name = "calc_total_volume",
+         i.check.current_value = calc_total_volume,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = glue("number_of_trips_for_each_container: {number_of_trips_for_each_container}, but calc_total_volume: {calc_total_volume}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "Enumerator should pay attention", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_calc_total_volume")
 
@@ -237,22 +235,22 @@ df_most_important_sources_of_earnings <- df_ipe_logical_data %>%
   filter(process_and_sell_any_agricultural_by_products %in% c("yes") | own_a_trading_business %in% c("yes") | 
          own_a_professional_office %in% c("yes") | drive_a_household_owned_taxi_bodaboda %in% c("yes") |  own_a_bar_or_restaurant %in% c("yes")|
          own_any_other_non_agricultural_business %in% c("yes"), most_important_sources_of_earnings == "none") %>%
-  mutate(m.type = "change_response",
-         m.name = "most_important_sources_of_earnings",
-         m.current_value = most_important_sources_of_earnings,
-         m.value = "yes",
-         m.issue_id = "logic_issue_most_important_sources_of_earnings",
-         m.issue = "Household member has an economic activity yet source of earning is none",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Enumerator should pay attention", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = "change_response",
+         i.check.name = "most_important_sources_of_earnings",
+         i.check.current_value = most_important_sources_of_earnings,
+         i.check.value = "yes",
+         i.check.issue_id = "logic_issue_most_important_sources_of_earnings",
+         i.check.issue = "Household member has an economic activity yet source of earning is none",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "Enumerator should pay attention", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_most_important_sources_of_earnings")
 
@@ -260,54 +258,53 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_mo
 # If Respondent stays alone i.e. hh_size = 1, spends (exp_food) 50,000 shillings or more on food 
 # but for more than 5 days (no_fd_frequency) in a month has no food
 
-df_no_fd_frequency <- df_ipe_logical_data %>% 
-  filter(exp_food > 50000, no_fd_frequency %in% c("often"), hh_size == 1) %>%
-  mutate(m.type = NA,
-         m.name = "no_fd_frequency",
-         m.current_value = no_fd_frequency,
-         m.value = "",
-         m.issue_id = "logic_issue_most_important_sources_of_earnings",
-         m.issue = glue("hh_size: {hh_size}, exp_food: {exp_food}, but no_fd_frequency: {no_fd_frequency} has no food to eat at all" ),
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "Enumerator should pay attention", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+# df_no_fd_frequency <- df_ipe_logical_data %>% 
+  # filter(exp_food > 50000, no_fd_frequency %in% c("often"), hh_size == 1) %>%
+  # mutate(i.check.type = NA,
+         # i.check.name = "no_fd_frequency",
+         # i.check.current_value = no_fd_frequency,
+         # i.check.value = "",
+         # i.check.issue_id = "logic_issue_no_fd_frequency",
+         # i.check.issue = glue("hh_size: {hh_size}, exp_food: {exp_food}, but no_fd_frequency: {no_fd_frequency} has no food to eat at all" ),
+         # i.check.other_text = "",
+         # i.check.checked_by = "",
+         # i.check.checked_date = as_date(today()),
+         # i.check.comment = "Enumerator should pay attention", 
+         # i.check.reviewed = "",
+         # i.check.adjust_log = "",
+         # i.check.uuid_cl = "",
+         # i.check.so_sm_choices = "") %>% 
+  # dplyr::select(starts_with("i.check.")) %>% 
+  # rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
-add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_no_fd_frequency")
+# add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_no_fd_frequency")
 
 
 # If pulses_fcs = 0 i.e. household has not eaten beans in the past seven days, surveys should be checked
 df_pulses_fcs <- df_ipe_logical_data %>% 
   filter(pulses_fcs == 0) %>%
-  mutate(m.type = NA,
-         m.name = "pulses_fcs",
-         m.current_value = pulses_fcs,
-         m.value = "",
-         m.issue_id = "un_expected_response",
-         m.issue = "It's unlikely that a household member will spend 7 days eating food without any beans",
-         m.other_text = "",
-         m.checked_by = "",
-         m.checked_date = as_date(today()),
-         m.comment = "", 
-         m.reviewed = "",
-         m.adjust_log = "",
-         m.uuid_cl = "",
-         m.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("m.")) %>% 
-  rename_with(~str_replace(string = .x, pattern = "m.", replacement = ""))
+  mutate(i.check.type = NA,
+         i.check.name = "pulses_fcs",
+         i.check.current_value = pulses_fcs,
+         i.check.value = "",
+         i.check.issue_id = "un_expected_response",
+         i.check.issue = "It's unlikely that every household member will spend 7 days without eating any beans",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.uuid_cl = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_pulses_fcs")
 
+ipe_combined_checks <- bind_rows(logic_output)
 
-
-
-
+write_csv(x = ipe_combined_checks, file = paste0("outputs/", butteR::date_file_prefix(), "_logical_checks.csv"), na = "")
 
 
 
