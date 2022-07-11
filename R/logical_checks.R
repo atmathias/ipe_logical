@@ -38,17 +38,15 @@ df_relation_to_hoh <- df_ipe_logical_data %>%
   mutate(i.check.type = "change_response",
          i.check.name = "relation_to_hoh",
          i.check.current_value = relation_to_hoh,
-         i.check.value = "",
+         i.check.value = "head_of_household",
          i.check.issue_id = "logic_issue_relation_to_hoh",
          i.check.issue = glue("relation_to_hoh: {relation_to_hoh}, but respondent stays alone"),
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "", 
+         i.check.comment = "Response to change to 'head_of_household' since respondent lives alone", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -59,7 +57,7 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_re
 
 df_live_in_house <- df_ipe_logical_data %>% 
   filter(live_in_house == "no") %>%
-  mutate(i.check.type = NA,
+  mutate(i.check.type = "remove_survey",
          i.check.name = "live_in_house",
          i.check.current_value = live_in_house,
          i.check.value = "",
@@ -68,11 +66,10 @@ df_live_in_house <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "", 
+         i.check.comment = "Management to decide", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = ""
+         ) %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -92,11 +89,9 @@ df_live_in_house_and_hh_size <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "", 
+         i.check.comment = "Keep data as it is", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -117,11 +112,9 @@ df_food_aid_assistance <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Needs confirmation from the field", 
+         i.check.comment = "Keep data as it is, needs confirmation from the field", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -142,11 +135,9 @@ df_receive_nfi <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Needs confirmation from the field", 
+         i.check.comment = "Keep data as it is, needs confirmation from the field", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -156,7 +147,7 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_re
 # If condiments = 0 i.e. household has not eaten salt, spices, tea, or coffee in the past seven days, surveys should be checked
 df_condiments_fcs <- df_ipe_logical_data %>% 
   filter(condiments_fcs == 0) %>%
-  mutate(i.check.type = NA,
+  mutate(i.check.type = "change_response",
          i.check.name = "condiments_fcs",
          i.check.current_value = condiments_fcs,
          i.check.value = "",
@@ -165,11 +156,9 @@ df_condiments_fcs <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Enumerators should pay attention to salt in particular", 
+         i.check.comment = "blank variable, most enumerators misinterpreted question", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -192,11 +181,9 @@ df_walking_dist_drinking_water_source <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Needs confirmation from the field", 
+         i.check.comment = "Keep data as it is", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -208,7 +195,7 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_wa
 
 df_calc_total_volume <- df_ipe_logical_data %>% 
   filter(calc_total_volume == 0 , number_of_trips_for_each_container > 0) %>%
-  mutate(i.check.type = NA,
+  mutate(i.check.type = "change_response",
          i.check.name = "calc_total_volume",
          i.check.current_value = calc_total_volume,
          i.check.value = "",
@@ -217,11 +204,9 @@ df_calc_total_volume <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Enumerator should pay attention to the number of trips made for all water containers", 
+         i.check.comment = "Keep data as it is.", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -245,11 +230,9 @@ df_most_important_sources_of_earnings <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Enumerator should pay attention to the economic activities done by hh members", 
+         i.check.comment = "Keep data as it is", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -273,8 +256,8 @@ add_checks_data_to_list(input_list_name = "logic_output", input_df_name = "df_mo
          # i.check.comment = "Enumerator should pay attention", 
          # i.check.reviewed = "",
          # i.check.adjust_log = "",
-         # i.check.uuid_cl = "",
-         # i.check.so_sm_choices = "") %>% 
+         # 
+         # ) %>% 
   # dplyr::select(starts_with("i.check.")) %>% 
   # rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
@@ -293,11 +276,9 @@ df_pulses_fcs <- df_ipe_logical_data %>%
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
-         i.check.comment = "Enumerators should not only look at beans but also other nuts", 
+         i.check.comment = "Keep data as it is", 
          i.check.reviewed = "",
-         i.check.adjust_log = "",
-         i.check.uuid_cl = "",
-         i.check.so_sm_choices = "") %>% 
+         i.check.adjust_log = "") %>% 
   dplyr::select(starts_with("i.check.")) %>% 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
