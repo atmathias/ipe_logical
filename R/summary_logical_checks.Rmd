@@ -1,0 +1,72 @@
+---
+title: "Summary logical checks"
+author: "Mathias"
+date: "7/13/2022"
+output: 
+   html_document:
+     toc: TRUE
+     toc_depth: 2
+     toc_float: true
+     collapsed: false
+     smooth_scroll: false
+     number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load packages
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+
+# Read data
+
+ipe_logical_summary <- read_csv("../inputs/20220711_logical_checks.csv")
+
+```
+
+# Errors by Settlement
+
+```{r, echo=FALSE}
+
+settlement_summary <- ipe_logical_summary %>% 
+  filter(!is.na(settlement_name)) %>% 
+  group_by(settlement_name) %>% 
+  summarise(total_errors = n()) 
+
+settlement_summary %>% 
+  DT::datatable()
+
+
+```
+# Grapgh
+```{r, echo=FALSE}
+ggplot(settlement_summary,aes(x=settlement_name, y=total_errors)) + 
+  geom_col()
+
+```
+
+# Errors by Enumerator
+
+```{r, echo=FALSE}
+enumerator_summary <- ipe_logical_summary %>% 
+  group_by(enumerator_id) %>% 
+  summarise(total_errors = n())
+
+enumerator_summary %>% 
+  DT::datatable()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
