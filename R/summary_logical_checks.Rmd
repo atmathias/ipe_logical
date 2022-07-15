@@ -52,21 +52,96 @@ ggplot(settlement_summary,aes(x=settlement_name, y=total_errors)) +
 ```{r, echo=FALSE}
 enumerator_summary <- ipe_logical_summary %>% 
   group_by(enumerator_id) %>% 
-  summarise(total_errors = n())
-
+  summarise(total_errors = n()) %>% 
+  arrange(desc(total_errors))
+  
 enumerator_summary %>% 
   DT::datatable()
 
 ```
 
+# Top 10 enumerators with errors
+
+```{r, echo = TRUE}}
+
+top_ten_enumerator_summary <- enumerator_summary %>% 
+  slice(1:10)
+
+top_ten_enumerator_summary %>% 
+  DT::datatable()
+
+```
+
+# settlelemt errors by enumerators
 
 
+```{r, echo=FALSE}
+settlement_enum_error <- ipe_logical_summary %>% 
+filter(!is.na(settlement_name)) %>% 
+  group_by(settlement_name, enumerator_id) %>% 
+  summarise(total_errors = n()) %>% 
+  arrange(settlement_name)
+
+settlement_enum_error %>% 
+DT::datatable()
+
+```
+
+# Enumerators by issue_id
+```{r, echo=FALSE}
+enum_issue_id <- ipe_logical_summary %>% 
+  group_by(enumerator_id, issue_id) %>% 
+  summarise(total_issues = n()) %>% 
+  arrange(enumerator_id)
+
+enum_issue_id %>% 
+DT::datatable()
+
+```
+
+# enumerators with most issues
+```{r, echo=FALSE}
+top_enum_issue_id <- ipe_logical_summary %>% 
+  group_by(enumerator_id, issue_id) %>%
+  summarise(total_issues = n()) %>%
+  mutate(total_issues = sum(total_issues)) %>% 
+  select(enumerator_id, total_issues) %>% 
+  unique() %>% 
+  arrange(desc(total_issues))
+ 
+ 
+top_enum_issue_id %>% 
+DT::datatable()
 
 
+```
 
+# Issues appearing most times
+```{r, echo=FALSE}
+issue_appear_most <- ipe_logical_summary %>% 
+  group_by(issue_id) %>%
+  summarise(issue_appearance = n()) %>% 
+  arrange(desc(issue_appearance))
+  
+  issue_appear_most %>% 
+  DT::datatable()  
+  
+  ggplot(issue_appear_most,aes(x=issue_id, y=issue_appearance)) + 
+  geom_col()
+  
+  
+```
 
+# Enumerators with surveys for deletion
+```{r, echo=FALSE}
+  
+Enum_survey_deletion <- ipe_logical_summary %>% 
+  filter(type == "remove_survey") %>% 
+  group_by(enumerator_id) %>% 
+  summarise(total_survey_deletion = n()) %>% 
+  arrange(desc(total_survey_deletion))
 
+ Enum_survey_deletion %>% 
+  DT::datatable()
 
-
-
-
+```
