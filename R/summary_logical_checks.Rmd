@@ -60,33 +60,31 @@ enumerator_summary %>%
 
 ```
 
-# Top 10 enumerators with errors
+# Top 5 enumerators with errors
 
-```{r, echo = TRUE}}
+```{r, echo = FALSE}
 
 top_ten_enumerator_summary <- enumerator_summary %>% 
-  slice(1:10)
+  slice(1:5)
 
 top_ten_enumerator_summary %>% 
   DT::datatable()
 
 ```
+ 
+# settlement errors by enumerators
 
-# settlelemt errors by enumerators
-
-
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 settlement_enum_error <- ipe_logical_summary %>% 
-filter(!is.na(settlement_name)) %>% 
+  filter(!is.na(settlement_name)) %>% 
   group_by(settlement_name, enumerator_id) %>% 
   summarise(total_errors = n()) %>% 
-  arrange(settlement_name)
+  arrange(desc(total_errors))
 
 settlement_enum_error %>% 
-DT::datatable()
+  DT::datatable()
 
 ```
-
 # Enumerators by issue_id
 ```{r, echo=FALSE}
 enum_issue_id <- ipe_logical_summary %>% 
@@ -95,7 +93,7 @@ enum_issue_id <- ipe_logical_summary %>%
   arrange(enumerator_id)
 
 enum_issue_id %>% 
-DT::datatable()
+  DT::datatable()
 
 ```
 
@@ -108,11 +106,10 @@ top_enum_issue_id <- ipe_logical_summary %>%
   select(enumerator_id, total_issues) %>% 
   unique() %>% 
   arrange(desc(total_issues))
- 
- 
-top_enum_issue_id %>% 
-DT::datatable()
 
+
+top_enum_issue_id %>% 
+  DT::datatable()
 
 ```
 
@@ -122,26 +119,26 @@ issue_appear_most <- ipe_logical_summary %>%
   group_by(issue_id) %>%
   summarise(issue_appearance = n()) %>% 
   arrange(desc(issue_appearance))
-  
-  issue_appear_most %>% 
+
+issue_appear_most %>% 
   DT::datatable()  
-  
-  ggplot(issue_appear_most,aes(x=issue_id, y=issue_appearance)) + 
+
+ggplot(issue_appear_most,aes(x=issue_id, y=issue_appearance)) + 
   geom_col()
-  
-  
+
+
 ```
 
 # Enumerators with surveys for deletion
 ```{r, echo=FALSE}
-  
+
 Enum_survey_deletion <- ipe_logical_summary %>% 
   filter(type == "remove_survey") %>% 
   group_by(enumerator_id) %>% 
   summarise(total_survey_deletion = n()) %>% 
   arrange(desc(total_survey_deletion))
 
- Enum_survey_deletion %>% 
+Enum_survey_deletion %>% 
   DT::datatable()
 
 ```
@@ -149,14 +146,14 @@ Enum_survey_deletion <- ipe_logical_summary %>%
 # Indicator misunderstood most
 
 ```{r, echo=FALSE}
-  
-indicator_misunderstood <- ipe_logical_summary %>% 
+
+indicator_misunderstood_most <- ipe_logical_summary %>% 
   group_by(name) %>% 
   summarise(indicator_misunderstood = n()) %>% 
-  arrange(desc(indicator_misunderstood))
+  arrange(desc(indicator_misunderstood)) 
 
- indicator_misunderstood %>% 
+indicator_misunderstood_most %>% 
   DT::datatable()
 
-```
 
+```
