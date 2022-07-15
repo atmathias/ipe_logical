@@ -22,7 +22,7 @@ library(knitr)
 
 # Read data
 
-ipe_logical_summary <- read_csv("../inputs/20220711_logical_checks.csv")
+ipe_logical_summary <- read_csv("../inputs/20220715_logical_checks.csv")
 
 ```
 
@@ -145,3 +145,18 @@ Enum_survey_deletion <- ipe_logical_summary %>%
   DT::datatable()
 
 ```
+
+# Indicator misunderstood most
+
+```{r, echo=FALSE}
+  
+indicator_misunderstood <- ipe_logical_summary %>% 
+  group_by(name) %>% 
+  summarise(indicator_misunderstood = n()) %>% 
+  arrange(desc(indicator_misunderstood))
+
+ indicator_misunderstood %>% 
+  DT::datatable()
+
+```
+
